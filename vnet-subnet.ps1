@@ -8,6 +8,7 @@ Write-Host "====== Azure provisioning starts ==================="
 
 #create a resource group
 New-AzResourceGroup -Name $resourceGroup -Location $location
+$cred = Get-Credential -Message "username/password for the virtual machine."
 
 #create a subnet
 $subnetConfig = New-AzVirtualNetworkSubnetConfig -Name $subnetName `
@@ -59,7 +60,7 @@ $nic = New-AzNetworkInterface `
 #create a VM config
 $vmConfig = New-AzVMConfig `
 -VMName $vmName -VMSize Standard_B1ls |
-Set-AzVMOperatingSystem -Linux -ComputerName $vmName -Credential $cred -DisablePasswordAuthentication |
+Set-AzVMOperatingSystem -Linux -ComputerName $vmName -Credential $cred |
 Set-AzVMSourceImage -PublisherName Canonical -Offer UbuntuServer -Skus 14.04.2-LTS -Version latest |
 Add-AzVMNetworkInterface -Id $nic.Id
 
